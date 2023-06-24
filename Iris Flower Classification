@@ -1,0 +1,41 @@
+#Importing libraries
+import numpy as np  #linear algebra
+import pandas as pd  #data processing 
+
+df=pd.read_csv("Iris.csv") #read dataset
+df #return dataframe
+
+#returns tuple of shape (Rows, columns) of dataframe
+df.shape
+
+#Dropping column
+df=df.drop(columns=["Id"])
+df.head() #returns first 5 entries
+
+#Transforming categorical data into numerical data
+#assign "1:Iris-setosa" "2:Iris-versicolor" "3:Iris-virginica"
+df["Species"].replace({"Iris-setosa":1, "Iris-versicolor":2, "Iris-virginica":3},inplace = True)
+df #return dataframe
+
+#Creating Arrays
+x=pd.DataFrame(df,columns=["SepalLengthCm","SepalWidthCm","PetalLengthCm","PetalWidthCm"]).values
+x
+y = df.Species.values.reshape(-1,1)
+y
+
+#importing necessary libraries
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.model_selection import train_test_split 
+from sklearn import metrics
+
+#Train Test Split
+x_train,x_test,y_train,y_test = train_test_split(x,y,test_size=0.30, random_state=42)
+x_train.shape
+y_train.shape
+k=6
+knclr=KNeighborsClassifier(k)
+
+#Train the model using KNN
+knclr.fit(x_train,y_train)
+y_pred=knclr.predict(x_test)
+metrics.accuracy_score(y_test,y_pred)*100
